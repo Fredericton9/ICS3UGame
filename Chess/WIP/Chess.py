@@ -1,21 +1,30 @@
 import pygame
 from pygame import *
 from random import *
-
 import os
 import sys
 import platform
-sys.path.append('modules')  # Access my module folder for importing
-
+sys.path.append('modules')
 from menu import *
 
 
 init()
+screen = display.set_mode((600,600))#Resolution
+"""Loading Images"""
+king1 = image.load("images/wking.png").convert_alpha()
+king2 = image.load("images/bking.png").convert_alpha()
+pawn1 = image.load("images/wpawn.png").convert_alpha()
+pawn2 = image.load("images/bpawn.png").convert_alpha()
+rook1 = image.load("images/wrook.png").convert_alpha()
+rook2 = image.load("images/brook.png").convert_alpha()
+queen1 = image.load("images/wqueen.png").convert_alpha()
+queen2 = image.load("images/bqueen.png").convert_alpha()
+bishop1 = image.load("images/wbishop.png").convert_alpha()
+bishop2 = image.load("images/bbishop.png").convert_alpha()
+knight1 = image.load("images/wknight.png").convert_alpha()
+knight2 = image.load("images/bknight.png").convert_alpha()
 
-screen = display.set_mode((600,600))
-
-def reset_game():
-    """Puts all of the pieces back"""
+def reset_game(): #Starting positions
 
     global game_board, turn, wcastle, bcastle, wcaptured, bcaptured
     close_menu(win_menu)
@@ -27,7 +36,7 @@ def reset_game():
     bcastle = 0
     wcaptured = []
     bcaptured = []
-    game_board[0] = 'R1'; game_board[7] = 'R1'; game_board[-1] = 'R2'; game_board[-8] = 'R2'
+    game_board[0] = 'R1'; game_board[7] = 'R1'; game_board[-1] = 'R2'; game_board[-8] = 'R2'#R1 is Rook for White, R2 is rook for Black, etc
     game_board[1] = 'N1'; game_board[6] = 'N1'; game_board[-2] = 'N2'; game_board[-7] = 'N2'
     game_board[2] = 'B1'; game_board[5] = 'B1'; game_board[-3] = 'B2'; game_board[-6] = 'B2'
     game_board[4] = 'K1'; game_board[3] = 'Q1'; game_board[-4] = 'K2'; game_board[-5] = 'Q2'
@@ -38,15 +47,10 @@ def reset_game():
         game_board[16+i] = None
 
 
-def select_piece(location):
-    """Attempts to select the piece at location"""
+def select_piece(location): #Function to select pieces
 
     global selected,moves,captures
 
-    # Notes:
-    # this function is so complicated because it finds where the newly selected piece can move and capture
-
-    # Remove illegal selections
     if game_board[location] == None or game_board[location][1] != str(turn):
         return
 
@@ -312,8 +316,7 @@ def select_piece(location):
     for i in captures:
         board_buttons[i].event_on(7)
 
-def deselect_piece():
-    """Deselects the selected piece"""
+def deselect_piece():#Stops selection
 
     global captures,moves,selected
 
@@ -327,8 +330,7 @@ def deselect_piece():
         moves = []
         selected = None
 
-def move_piece(destination):
-    """Moves the selected piece"""
+def move_piece(destination):#Moves piece
 
     global game_board, en_passent, wcastle, bcastle, wcaptured, bcaptured
 
@@ -392,8 +394,7 @@ def move_piece(destination):
     game_board[destination] = game_board[selected]
     game_board[selected] = None
 
-def attacked_spaces(player,board):
-    """Returns which spaces a player is currently able to attack"""
+def attacked_spaces(player,board):#Attackable spaces
 
     attacked = []
 
@@ -516,8 +517,7 @@ def attacked_spaces(player,board):
 
     return attacked
 
-def is_checkmated():
-    """Returns 1 if the player with the current turn to move is checkmated"""
+def is_checkmated():#Checkmate function
     for i in range(64):
         select_piece(i)
         if moves+captures != []:
@@ -528,12 +528,6 @@ def is_checkmated():
 
 
 """ Game variables """
-# Notes:
-# selected is a number representing where the selected piece is
-# moves is a list of where the selected piece can move
-# captures is a list of where the selected piece can capture
-# game_board is a list of every space on the board and says what piece exists there
-# turn is a number either 1 or 2 representing whose turn it is
 
 turn = 1
 wcastle = 0
@@ -546,25 +540,7 @@ bcaptured = []
 game_board = [None for i in range(64)]
 en_passent = None
 
-""" Image Loading """
-king1 = image.load("images/wking.png").convert_alpha()
-king2 = image.load("images/bking.png").convert_alpha()
-pawn1 = image.load("images/wpawn.png").convert_alpha()
-pawn2 = image.load("images/bpawn.png").convert_alpha()
-rook1 = image.load("images/wrook.png").convert_alpha()
-rook2 = image.load("images/brook.png").convert_alpha()
-queen1 = image.load("images/wqueen.png").convert_alpha()
-queen2 = image.load("images/bqueen.png").convert_alpha()
-bishop1 = image.load("images/wbishop.png").convert_alpha()
-bishop2 = image.load("images/bbishop.png").convert_alpha()
-knight1 = image.load("images/wknight.png").convert_alpha()
-knight2 = image.load("images/bknight.png").convert_alpha()
-
 """ Creation of game board """
-# Notes:
-# Event 5 represents a selected piece
-# Event 6 represents a possible move for a piece
-# Event 7 represents a possible capture of an enemy piece
 
 font1 = font.Font('fonts/Alido.otf',18)
 font2 = font.Font('fonts/LCALLIG.ttf',36)
@@ -575,14 +551,8 @@ draw.rect(win_bg,(255,0,0),(5,5,240,80))
 
 layer_black = Surface((50,50))
 layer_black.fill((90,74,32))
-#layer_hovered = Surface((50,50))
-#layer_hovered.fill((0,0,255))
-layer_selected = Surface((50,50))
-layer_selected.fill((0,255,0))
 layer_is_move = Surface((50,50),SRCALPHA)
 layer_is_move.fill((0,0,255,85))
-#layer_is_capture = Surface((50,50))
-#layer_is_capture.fill((255,0,0))
 
 new_bg = Surface((100,20))
 new_bg.fill((255,0,0))
@@ -590,7 +560,7 @@ new_bg2 = Surface((100,20))
 new_bg2.fill((0,0,255))
 
 promote_layer = Surface((120,120))
-promote_layer.fill((255,255,255))
+promote_layer.fill((255,0,0))
 draw.rect(promote_layer,(220,20,60),(5,5,110,110))
 draw.rect(promote_layer,(255,255,255),(10,10,100,100))
 draw.line(promote_layer,(255,0,0),(10,60),(110,60),5)
@@ -608,19 +578,11 @@ for i in range(64):
 
 new_game = Button((2,2,50,20),'new',(0,))
 new_game.add_layer(new_bg,(0,0),(2,))
-#new_game.add_text("Reset",font1,(255,255,255),(25,10),1,0,(0,))
-
-quit_button = Button((548,2,50,20),'quit',(0,))
-quit_button.add_layer(new_bg,(0,0),(2,))
-#quit_button.add_text("Quit",font1,(255,255,255),(25,10),1,0,(0,))
-
-#add_layer_multi(layer_hovered,(0,0),(2,-5,-6,-7),board_buttons)
-add_layer_multi(layer_selected,(0,0),(5,),board_buttons)
 add_layer_multi(layer_is_move,(0,0),(-5,6,-7),board_buttons)
-#add_layer_multi(layer_is_capture,(0,0),(-5,7),board_buttons)
+
 
 add_objects(game_menu,board_buttons)
-add_objects(game_menu,(new_game,quit_button))
+
 
 # Win menu
 win_menu = make_menu((175,270,250,90),'win',1)
@@ -673,15 +635,6 @@ add_objects(bpromote_menu,(bqueen_btn,bknight_btn,brook_btn,bbishop_btn))
 reset_game()
 
 """ Main Loop """
-# Notes:
-# My loops run in three main steps:
-#   1. Get inputs for each menu along with general inputs
-#   2. Handle inputs for each menu and update all running systems
-#   3. Draw all of the objects to the screen for each menu
-#
-# Using my menuing system I'm able to easily organize every GUI including the
-# main game itself into these three steps.
-
 running = 1
 while running:
     """ STEP 1: Get inputs """
@@ -825,9 +778,8 @@ while running:
             if game_board[i] == 'N2':
                 game_menu.blit(knight2,(100+(i%8)*50,450-(i//8)*50))
 
-    screen.fill((255,255,255))
-    #draw.rect(screen,(255,0,0),(50,50,500,500))
-    draw.rect(screen,(255,255,255),(100,100,400,400))
+    screen.fill((0,0,255))
+    draw.rect(screen,(255,0,0),(100,100,400,400))
     draw_menus(screen)
 
     display.flip()
