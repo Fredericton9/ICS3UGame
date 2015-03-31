@@ -1,4 +1,4 @@
-import pygame._view
+import pygame
 from pygame import *
 from random import *
 
@@ -9,13 +9,6 @@ sys.path.append('modules')  # Access my module folder for importing
 
 from menu import *
 
-if platform.system() == 'Windows':
-    os.environ['SDL_VIDEODRIVER'] = 'windib'    # Ensure compatability
-os.environ['SDL_VIDEO_CENTERED'] = '1'  # Centre game window
-
-# ############################################################################ #
-# #    Worked on for 6:30                                                    # #
-# ############################################################################ #
 
 init()
 
@@ -330,7 +323,6 @@ def deselect_piece():
             board_buttons[i].event_off(6)
         for i in captures:
             board_buttons[i].event_off(7)
-
         captures = []
         moves = []
         selected = None
@@ -395,19 +387,7 @@ def move_piece(destination):
         bcastle = -1
 
     # Add captured piece to list of captured pieces
-    if destination in captures:
-        if turn == 1:
-            if game_board[destination] == None:
-                wcaptured.append("P")
-            else:
-                wcaptured.append(game_board[destination][0])
-            wcaptured = sorted(wcaptured,key = lambda x: "PBNRQ".find(x))
-        else:
-            if game_board[destination] == None:
-                bcaptured.append("P")
-            else:
-                bcaptured.append(game_board[destination][0])
-            bcaptured = sorted(bcaptured,key = lambda x: "PBNRQ".find(x))
+    #
 
     game_board[destination] = game_board[selected]
     game_board[selected] = None
@@ -590,19 +570,19 @@ font1 = font.Font('fonts/Alido.otf',18)
 font2 = font.Font('fonts/LCALLIG.ttf',36)
 
 win_bg = Surface((250,90))
-win_bg.fill((0,0,0))
-draw.rect(win_bg,(255,255,255),(5,5,240,80))
+win_bg.fill((220,20,60))
+draw.rect(win_bg,(255,0,0),(5,5,240,80))
 
 layer_black = Surface((50,50))
-layer_black.fill((128,128,128))
-layer_hovered = Surface((50,50))
-layer_hovered.fill((0,0,255))
+layer_black.fill((90,74,32))
+#layer_hovered = Surface((50,50))
+#layer_hovered.fill((0,0,255))
 layer_selected = Surface((50,50))
 layer_selected.fill((0,255,0))
 layer_is_move = Surface((50,50),SRCALPHA)
 layer_is_move.fill((0,0,255,85))
-layer_is_capture = Surface((50,50))
-layer_is_capture.fill((255,0,0))
+#layer_is_capture = Surface((50,50))
+#layer_is_capture.fill((255,0,0))
 
 new_bg = Surface((100,20))
 new_bg.fill((255,0,0))
@@ -611,10 +591,10 @@ new_bg2.fill((0,0,255))
 
 promote_layer = Surface((120,120))
 promote_layer.fill((255,255,255))
-draw.rect(promote_layer,(0,0,0),(5,5,110,110))
+draw.rect(promote_layer,(220,20,60),(5,5,110,110))
 draw.rect(promote_layer,(255,255,255),(10,10,100,100))
-draw.line(promote_layer,(0,0,0),(10,60),(110,60),5)
-draw.line(promote_layer,(0,0,0),(60,10),(60,110),5)
+draw.line(promote_layer,(255,0,0),(10,60),(110,60),5)
+draw.line(promote_layer,(255,0,0),(60,10),(60,110),5)
 
 # In-game GUI
 game_menu = make_menu((0,0,800,800),'game',0)
@@ -628,16 +608,16 @@ for i in range(64):
 
 new_game = Button((2,2,50,20),'new',(0,))
 new_game.add_layer(new_bg,(0,0),(2,))
-new_game.add_text("Reset",font1,(0,0,0),(25,10),1,0,(0,))
+#new_game.add_text("Reset",font1,(255,255,255),(25,10),1,0,(0,))
 
 quit_button = Button((548,2,50,20),'quit',(0,))
 quit_button.add_layer(new_bg,(0,0),(2,))
-quit_button.add_text("Quit",font1,(0,0,0),(25,10),1,0,(0,))
+#quit_button.add_text("Quit",font1,(255,255,255),(25,10),1,0,(0,))
 
-add_layer_multi(layer_hovered,(0,0),(2,-5,-6,-7),board_buttons)
+#add_layer_multi(layer_hovered,(0,0),(2,-5,-6,-7),board_buttons)
 add_layer_multi(layer_selected,(0,0),(5,),board_buttons)
 add_layer_multi(layer_is_move,(0,0),(-5,6,-7),board_buttons)
-add_layer_multi(layer_is_capture,(0,0),(-5,7),board_buttons)
+#add_layer_multi(layer_is_capture,(0,0),(-5,7),board_buttons)
 
 add_objects(game_menu,board_buttons)
 add_objects(game_menu,(new_game,quit_button))
@@ -670,8 +650,8 @@ bknight_btn = Button((60,10,50,50),'N',(0,))
 brook_btn = Button((10,60,50,50),'R',(0,))
 bbishop_btn = Button((60,60,50,50),'B',(0,))
 
-add_layer_multi(layer_hovered,(0,0),(2,),(wqueen_btn,wknight_btn,wrook_btn,wbishop_btn,
-                                          bqueen_btn,bknight_btn,brook_btn,bbishop_btn))
+#add_layer_multi(layer_hovered,(0,0),(2,),(wqueen_btn,wknight_btn,wrook_btn,wbishop_btn,
+#                                          bqueen_btn,bknight_btn,brook_btn,bbishop_btn))
 
 wqueen_btn.add_layer(queen1,(0,0),(0,))
 wrook_btn.add_layer(rook1,(0,0),(0,))
@@ -846,7 +826,7 @@ while running:
                 game_menu.blit(knight2,(100+(i%8)*50,450-(i//8)*50))
 
     screen.fill((255,255,255))
-    draw.rect(screen,(0,0,0),(50,50,500,500))
+    #draw.rect(screen,(255,0,0),(50,50,500,500))
     draw.rect(screen,(255,255,255),(100,100,400,400))
     draw_menus(screen)
 
