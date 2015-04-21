@@ -27,7 +27,7 @@ whiteBishop = image.load("images/wbishop.png").convert_alpha()
 blackBishop = image.load("images/bbishop.png").convert_alpha()
 whiteKnight = image.load("images/wknight.png").convert_alpha()
 blackKnight = image.load("images/bknight.png").convert_alpha()
-
+"""Grid System and Text"""
 def GridSystem():
     grid_horizontal = font.render("a     b     c     d     e     f     g     h", 0, (0,255,0))
     game_menu.blit(grid_horizontal,(120,500))
@@ -61,7 +61,7 @@ def GridSystem():
 
     MoveLog = font.render("Move Log:",1,(255,255,255))
     game_menu.blit(MoveLog,(575,100))
-
+"""Assigns the starting positions for the pieces"""
 def GameStart(): #Starting positions
     global game_board, PlayerTurn
     deselect_piece()
@@ -75,8 +75,8 @@ def GameStart(): #Starting positions
         game_board[48+i] = 'P2'
     for i in range(32):
         game_board[16+i] = None
-
-def select_piece(location): #Function to select pieces
+"""Function to select pieces"""
+def select_piece(location):
     global selected,moves,captures
 
     if game_board[location] == None or game_board[location][1] != str(PlayerTurn):
@@ -311,8 +311,8 @@ def select_piece(location): #Function to select pieces
         board_buttons[i].event_on(6)
     for i in captures:
         board_buttons[i].event_on(7)
-
-def deselect_piece():#Lets you deselect a piece
+"""Deselects pieces"""
+def deselect_piece():
 
     global captures,moves,selected
     if selected != None:
@@ -324,7 +324,7 @@ def deselect_piece():#Lets you deselect a piece
         captures = []
         moves = []
         selected = None
-
+"""Moves pieces"""
 def move_piece(destination):#Moves piece
 
     global game_board, en_passent
@@ -346,8 +346,8 @@ def move_piece(destination):#Moves piece
 
     game_board[destination] = game_board[selected]
     game_board[selected] = None
-
-def attacked_spaces(player,board):#Attackable spaces
+"""Function to figure out attackable spaces"""
+def attacked_spaces(player,board):
     attacked = []
     for i in range(64):
         if board[i] == None:
@@ -467,7 +467,7 @@ def attacked_spaces(player,board):#Attackable spaces
                 attacked.append((x-1)+y*8)
 
     return attacked
-
+"""Function to determine checkmate victory"""
 def is_checkmated():#Checkmate function
     for i in range(64):
         select_piece(i)
@@ -477,7 +477,7 @@ def is_checkmated():#Checkmate function
         deselect_piece()
     return 1
 
-""" Game variables """
+""" Variables """
 
 PlayerTurn = 1
 selected = None
@@ -486,7 +486,7 @@ captures = []
 game_board = [None for i in range(64)]
 en_passent = None
 
-""" Creation of game board """
+"""Game Board Creation"""
 font = pygame.font.Font(None, 36)
 
 win_bg = Surface((250,90))
@@ -510,7 +510,7 @@ draw.rect(promote_layer,(255,255,255),(10,10,100,100))
 draw.line(promote_layer,(255,0,0),(10,60),(110,60),5)
 draw.line(promote_layer,(255,0,0),(60,10),(60,110),5)
 
-# In-game GUI
+"""Grid Spaces"""
 game_menu = make_menu((0,0,800,800),'game',0)
 open_menu(game_menu)
 
@@ -524,18 +524,15 @@ add_layer_multi(layer_is_move,(0,0),(-5,6,-7),board_buttons)
 
 add_objects(game_menu,board_buttons)
 
-
-# Promotion menus
+"""Promotion Menus"""
 wqueen_btn = Button((10,10,50,50),'Q',(0,))
 wknight_btn = Button((60,10,50,50),'N',(0,))
 wrook_btn = Button((10,60,50,50),'R',(0,))
 wbishop_btn = Button((60,60,50,50),'B',(0,))
-
 bqueen_btn = Button((10,10,50,50),'Q',(0,))
 bknight_btn = Button((60,10,50,50),'N',(0,))
 brook_btn = Button((10,60,50,50),'R',(0,))
 bbishop_btn = Button((60,60,50,50),'B',(0,))
-
 
 wqueen_btn.add_layer(whiteQueen,(0,0),(0,))
 wrook_btn.add_layer(whiteRook,(0,0),(0,))
@@ -560,7 +557,7 @@ pygame.mixer.music.set_volume(0.2)
 pygame.mixer.music.play(0)
 pygame.mixer.music.queue('Music/Theme2.mp3')
 
-
+"""START THE GAME!"""
 GameStart()
 
 """ Main Loop """
