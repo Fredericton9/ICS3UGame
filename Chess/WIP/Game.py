@@ -470,29 +470,29 @@ def GridSystem():
     grid_horizontal = font.render("a     b     c     d     e     f     g     h", 0, (0,255,0))
     game_menu.blit(grid_horizontal,(120,500))
 
-    gridvert1 = font.render("1", 1, (0,255,0))
-    game_menu.blit(gridvert1, (80,110))
-
-    gridvert2 = font.render("2", 1, (0,255,0))
-    game_menu.blit(gridvert2, (80,160))
-
-    gridvert3 = font.render("3", 1, (0,255,0))
-    game_menu.blit(gridvert3, (80,210))
-
-    gridvert4 = font.render("4", 1, (0,255,0))
-    game_menu.blit(gridvert4, (80,260))
-
-    gridvert5 = font.render("5", 1, (0,255,0))
-    game_menu.blit(gridvert5, (80,310))
-
-    gridvert6 = font.render("6", 1, (0,255,0))
-    game_menu.blit(gridvert6, (80,360))
+    gridvert8 = font.render("8", 1, (0,255,0))
+    game_menu.blit(gridvert8, (80,110))
 
     gridvert7 = font.render("7", 1, (0,255,0))
-    game_menu.blit(gridvert7, (80,410))
+    game_menu.blit(gridvert7, (80,160))
 
-    gridvert8 = font.render("8", 1, (0,255,0))
-    game_menu.blit(gridvert8, (80,460))
+    gridvert6 = font.render("6", 1, (0,255,0))
+    game_menu.blit(gridvert6, (80,210))
+
+    gridvert5 = font.render("5", 1, (0,255,0))
+    game_menu.blit(gridvert5, (80,260))
+
+    gridvert4 = font.render("4", 1, (0,255,0))
+    game_menu.blit(gridvert4, (80,310))
+
+    gridvert3 = font.render("3", 1, (0,255,0))
+    game_menu.blit(gridvert3, (80,360))
+
+    gridvert2 = font.render("2", 1, (0,255,0))
+    game_menu.blit(gridvert2, (80,410))
+
+    gridvert1 = font.render("1", 1, (0,255,0))
+    game_menu.blit(gridvert1, (80,460))
 
 """ Game variables """
 
