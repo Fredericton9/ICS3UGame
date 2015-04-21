@@ -78,10 +78,10 @@ def GameStart(): #Starting positions
 """Function to select pieces"""
 def select_piece(location):
     global selected,moves,captures
-
+    effect = pygame.mixer.Sound('Sound Effects/Move.mp3')
+    effect.play()
     if game_board[location] == None or game_board[location][1] != str(PlayerTurn):
         return
-
     selected = location
     moves = []
     captures = []
