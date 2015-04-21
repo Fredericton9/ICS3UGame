@@ -1,3 +1,10 @@
+"""
+Created by Kevin Leung and Austin Lee for ICS3U
+"""
+
+
+
+
 import pygame
 from pygame import *
 from random import *
@@ -9,7 +16,8 @@ from menu import *
 
 
 init()
-screen = display.set_mode((750,750))#Resolution
+screen = display.set_mode((750,600))#Resolution
+
 """Loading Images"""
 whiteKing = image.load("images/wking.png").convert_alpha()
 blackKing = image.load("images/bking.png").convert_alpha()
@@ -80,7 +88,6 @@ def select_piece(location): #Function to select pieces
     # Rook and half of Queen for both players
     if game_board[selected][0] in 'RQ':
         x,y = selected%8,selected//8
-
         for i in range(x+1,8,1):
             if game_board[i+y*8] == None:   # Check if no blocking piece
                 moves.append(i+y*8)
@@ -89,7 +96,6 @@ def select_piece(location): #Function to select pieces
                 break
             else:
                 break
-
         for i in range(x-1,-1,-1):
             if game_board[i+y*8] == None:
                 moves.append(i+y*8)
@@ -98,7 +104,6 @@ def select_piece(location): #Function to select pieces
                 break
             else:
                 break
-
         for i in range(y+1,8,1):
             if game_board[x+i*8] == None:
                 moves.append(x+i*8)
@@ -119,7 +124,6 @@ def select_piece(location): #Function to select pieces
 
     # Bishop and other half of Queen for both players
     if game_board[selected][0] in 'BQ':
-
         i = selected+7
         while (i-7)%8 != 0 and (i-7)//8 != 7:   # Check if valid move
             if game_board[i] == None:   # Check if no blocking piece
@@ -130,7 +134,6 @@ def select_piece(location): #Function to select pieces
             else:
                 break
             i += 7
-
         i = selected+9
         while (i-9)%8 != 7 and (i-9)//8 != 7:
             if game_board[i] == None:
@@ -141,7 +144,6 @@ def select_piece(location): #Function to select pieces
             else:
                 break
             i += 9
-
         i = selected-7
         while (i+7)%8 != 7 and (i+7)//8 != 0:
             if game_board[i] == None:
@@ -152,7 +154,6 @@ def select_piece(location): #Function to select pieces
             else:
                 break
             i -= 7
-
         i = selected-9
         while (i+9)%8 != 0 and (i+9)//8 != 0:
             if game_board[i] == None:
@@ -163,11 +164,9 @@ def select_piece(location): #Function to select pieces
             else:
                 break
             i -= 9
-
     # Knight for both players
     if game_board[selected][0] == 'N':
         x,y = selected%8,selected//8
-
         if x >= 2 and y <= 6:   # Check if valid move
             if game_board[(x-2)+(y+1)*8] == None:   # Check if no blocking piece
                 moves.append((x-2)+(y+1)*8)
@@ -178,7 +177,6 @@ def select_piece(location): #Function to select pieces
                 moves.append((x-1)+(y+2)*8)
             elif game_board[(x-1)+(y+2)*8][1] != str(PlayerTurn):
                 captures.append((x-1)+(y+2)*8)
-
         if x <= 6 and y <= 5:
             if game_board[(x+1)+(y+2)*8] == None:
                 moves.append((x+1)+(y+2)*8)
@@ -189,7 +187,6 @@ def select_piece(location): #Function to select pieces
                 moves.append((x+2)+(y+1)*8)
             elif game_board[(x+2)+(y+1)*8][1] != str(PlayerTurn):
                 captures.append((x+2)+(y+1)*8)
-
         if x <= 5 and y >= 1:
             if game_board[(x+2)+(y-1)*8] == None:
                 moves.append((x+2)+(y-1)*8)
@@ -200,7 +197,6 @@ def select_piece(location): #Function to select pieces
                 moves.append((x+1)+(y-2)*8)
             elif game_board[(x+1)+(y-2)*8][1] != str(PlayerTurn):
                 captures.append((x+1)+(y-2)*8)
-
         if x >= 1 and y >= 2:
             if game_board[(x-1)+(y-2)*8] == None:
                 moves.append((x-1)+(y-2)*8)
@@ -293,7 +289,6 @@ def select_piece(location): #Function to select pieces
 def deselect_piece():#Stops selection
 
     global captures,moves,selected
-
     if selected != None:
         board_buttons[selected].event_off(5)
         for i in moves:
@@ -307,8 +302,6 @@ def deselect_piece():#Stops selection
 def move_piece(destination):#Moves piece
 
     global game_board, en_passent
-
-
     if game_board[selected][0] == 'P':
         # En-passent rule activation
         if abs(destination-selected) in (7,9) and en_passent != None and abs(en_passent-destination) == 8:
@@ -329,9 +322,7 @@ def move_piece(destination):#Moves piece
     game_board[selected] = None
 
 def attacked_spaces(player,board):#Attackable spaces
-
     attacked = []
-
     for i in range(64):
         if board[i] == None:
             continue
@@ -536,8 +527,6 @@ for i in range(64):
     if (i+i//8)%2 == 0:
         board_buttons[i].add_layer(layer_black,(0,0),(0,))
 
-new_game = Button((2,2,50,20),'new',(0,))
-new_game.add_layer(new_bg,(0,0),(2,))
 add_layer_multi(layer_is_move,(0,0),(-5,6,-7),board_buttons)
 
 add_objects(game_menu,board_buttons)
