@@ -26,14 +26,12 @@ knight2 = image.load("images/bknight.png").convert_alpha()
 
 def reset_game(): #Starting positions
 
-    global game_board, turn, wcastle, bcastle, wcaptured, bcaptured
+    global game_board, turn, wcaptured, bcaptured
     close_menu(win_menu)
     win_menu.event_off(5)
     win_menu.event_off(6)
     deselect_piece()
     turn = 1
-    wcastle = 0
-    bcastle = 0
     wcaptured = []
     bcaptured = []
     game_board[0] = 'R1'; game_board[7] = 'R1'; game_board[-1] = 'R2'; game_board[-8] = 'R2'#R1 is Rook for White, R2 is rook for Black, etc
@@ -223,25 +221,6 @@ def select_piece(location): #Function to select pieces
     if game_board[selected][0] == 'K':
         x,y = selected%8,selected//8
         attacked = attacked_spaces(1+turn%2,game_board)
-
-        if selected == 3 and wcastle%2 == 0 and \
-           game_board[1] == None and game_board[2] == None and\
-           not 1 in attacked and not 2 in attacked and not 3 in attacked:
-            moves.append(1)
-        if selected == 3 and -1 < wcastle < 2 and \
-           game_board[4] == None and game_board[5] == None and game_board[6] == None and\
-           not 3 in attacked and not 4 in attacked and not 5 in attacked:
-            moves.append(5)
-
-        if selected == 59 and bcastle%2 == 0 and \
-           game_board[58] == None and game_board[57] == None and\
-           not 57 in attacked and not 58 in attacked and not 59 in attacked:
-            moves.append(57)
-        if selected == 59 and -1 < bcastle < 2 and \
-           game_board[60] == None and game_board[61] == None and game_board[62] == None and\
-           not 59 in attacked and not 60 in attacked and not 61 in attacked:
-            moves.append(61)
-
         if x >= 1 and y <= 6: # Check if valid move
             if game_board[(x-1)+(y+1)*8] == None:   # Check if no blocking piece
                 moves.append((x-1)+(y+1)*8)
@@ -332,7 +311,7 @@ def deselect_piece():#Stops selection
 
 def move_piece(destination):#Moves piece
 
-    global game_board, en_passent, wcastle, bcastle, wcaptured, bcaptured
+    global game_board, en_passent, wcaptured, bcaptured
 
 
     if game_board[selected][0] == 'P':
@@ -350,44 +329,6 @@ def move_piece(destination):#Moves piece
             open_menu(bpromote_menu)
         if destination > 55 and turn == 1:
             open_menu(wpromote_menu)
-
-    # Deny castling to moved rooks
-    if game_board[selected] == 'R1':
-        if selected == 0:
-            if wcastle == 2: wcastle = -1
-            else:            wcastle = 1
-        elif selected == 7:
-            if wcastle == 1: wcastle = -1
-            else:            wcastle = 2
-    if game_board[selected] == 'R2':
-        if selected == 56:
-            if bcastle == 2: bcastle = -1
-            else:            bcastle = 1
-        elif selected == 63:
-            if bcastle == 1: bcastle = -1
-            else:            bcastle = 2
-
-    # Activate castling move
-    if game_board[selected][0] == 'K' and abs(destination-selected) == 2:
-        if destination == 1:
-            game_board[2] = 'R1'
-            game_board[0] = None
-        elif destination == 5:
-            game_board[4] = 'R1'
-            game_board[7] = None
-        elif destination == 61:
-            game_board[60] = 'R2'
-            game_board[63] = None
-        elif destination == 57:
-            game_board[58] = 'R2'
-            game_board[56] = None
-
-    # Deny castling to moved king
-    if game_board[selected] == 'K1':
-        wcastle = -1
-    if game_board[selected] == 'K2':
-        bcastle = -1
-
     # Add captured piece to list of captured pieces
     #
 
@@ -556,8 +497,6 @@ def GridSystem():
 """ Game variables """
 
 turn = 1
-wcastle = 0
-bcastle = 0
 selected = None
 moves = []
 captures = []
@@ -576,7 +515,7 @@ draw.rect(win_bg,(255,0,0),(5,5,240,80))
 layer_black = Surface((50,50))
 layer_black.fill((90,74,32))
 layer_is_move = Surface((50,50),SRCALPHA)
-layer_is_move.fill((0,0,255))
+layer_is_move.fill((120,0,120))
 
 new_bg = Surface((100,20))
 new_bg.fill((255,0,0))
