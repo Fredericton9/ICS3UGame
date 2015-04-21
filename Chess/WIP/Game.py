@@ -1,10 +1,6 @@
 """
 Created by Kevin Leung and Austin Lee for ICS3U
 """
-
-
-
-
 import pygame
 from pygame import *
 from random import *
@@ -32,8 +28,41 @@ blackBishop = image.load("images/bbishop.png").convert_alpha()
 whiteKnight = image.load("images/wknight.png").convert_alpha()
 blackKnight = image.load("images/bknight.png").convert_alpha()
 
-def reset_game(): #Starting positions
+def GridSystem():
+    grid_horizontal = font.render("a     b     c     d     e     f     g     h", 0, (0,255,0))
+    game_menu.blit(grid_horizontal,(120,500))
 
+    gridvert8 = font.render("8", 1, (0,255,0))
+    game_menu.blit(gridvert8, (80,110))
+
+    gridvert7 = font.render("7", 1, (0,255,0))
+    game_menu.blit(gridvert7, (80,160))
+
+    gridvert6 = font.render("6", 1, (0,255,0))
+    game_menu.blit(gridvert6, (80,210))
+
+    gridvert5 = font.render("5", 1, (0,255,0))
+    game_menu.blit(gridvert5, (80,260))
+
+    gridvert4 = font.render("4", 1, (0,255,0))
+    game_menu.blit(gridvert4, (80,310))
+
+    gridvert3 = font.render("3", 1, (0,255,0))
+    game_menu.blit(gridvert3, (80,360))
+
+    gridvert2 = font.render("2", 1, (0,255,0))
+    game_menu.blit(gridvert2, (80,410))
+
+    gridvert1 = font.render("1", 1, (0,255,0))
+    game_menu.blit(gridvert1, (80,460))
+
+    Title = font.render("CHESS BATTLE 2015",1,(255,255,255))
+    game_menu.blit(Title,(275,50))
+
+    MoveLog = font.render("Move Log:",1,(255,255,255))
+    game_menu.blit(MoveLog,(575,100))
+
+def GameStart(): #Starting positions
     global game_board, PlayerTurn
     deselect_piece()
     PlayerTurn = 1
@@ -47,9 +76,7 @@ def reset_game(): #Starting positions
     for i in range(32):
         game_board[16+i] = None
 
-
 def select_piece(location): #Function to select pieces
-
     global selected,moves,captures
 
     if game_board[location] == None or game_board[location][1] != str(PlayerTurn):
@@ -58,8 +85,7 @@ def select_piece(location): #Function to select pieces
     selected = location
     moves = []
     captures = []
-
-    # Pawn for player 1
+    # Pawn for player 1, seperate because of promotions
     if game_board[selected] == 'P1':
         if game_board[selected+8] == None:
             moves.append(selected+8)
@@ -85,7 +111,7 @@ def select_piece(location): #Function to select pieces
                                 (game_board[selected-1] == 'P1' and en_passent == selected-1)):
             captures.append(selected-9)
 
-    # Rook and half of Queen for both players
+    # Rook and Queen for both players
     if game_board[selected][0] in 'RQ':
         x,y = selected%8,selected//8
         for i in range(x+1,8,1):
@@ -122,7 +148,7 @@ def select_piece(location): #Function to select pieces
             else:
                 break
 
-    # Bishop and other half of Queen for both players
+    # Bishop and Queen for both
     if game_board[selected][0] in 'BQ':
         i = selected+7
         while (i-7)%8 != 0 and (i-7)//8 != 7:   # Check if valid move
@@ -208,7 +234,7 @@ def select_piece(location): #Function to select pieces
             elif game_board[(x-2)+(y-1)*8][1] != str(PlayerTurn):
                 captures.append((x-2)+(y-1)*8)
 
-    # King for both players
+    # King for both players, bit more complicated because of checkmate
     if game_board[selected][0] == 'K':
         x,y = selected%8,selected//8
         attacked = attacked_spaces(1+PlayerTurn%2,game_board)
@@ -258,7 +284,7 @@ def select_piece(location): #Function to select pieces
         if game_board[i] != None and game_board[i][0] == 'K' and game_board[i][1] == str(PlayerTurn):
             break
 
-    # See if a move allows the king to be taken
+    # Check if a move will result in check
     t_moves = list(moves)
     for j in t_moves:
         t_game = list(game_board)
@@ -269,7 +295,7 @@ def select_piece(location): #Function to select pieces
         if i in attacked_spaces(1+PlayerTurn%2,t_game):
             moves.remove(j)
 
-    # See if a capture allows the king to be taken
+    # See if a capture will result in a check
     t_captures = list(captures)
     for j in t_captures:
         t_game = list(game_board)
@@ -286,7 +312,7 @@ def select_piece(location): #Function to select pieces
     for i in captures:
         board_buttons[i].event_on(7)
 
-def deselect_piece():#Stops selection
+def deselect_piece():#Lets you deselect a piece
 
     global captures,moves,selected
     if selected != None:
@@ -450,39 +476,6 @@ def is_checkmated():#Checkmate function
             return 0
         deselect_piece()
     return 1
-def GridSystem():
-    grid_horizontal = font.render("a     b     c     d     e     f     g     h", 0, (0,255,0))
-    game_menu.blit(grid_horizontal,(120,500))
-
-    gridvert8 = font.render("8", 1, (0,255,0))
-    game_menu.blit(gridvert8, (80,110))
-
-    gridvert7 = font.render("7", 1, (0,255,0))
-    game_menu.blit(gridvert7, (80,160))
-
-    gridvert6 = font.render("6", 1, (0,255,0))
-    game_menu.blit(gridvert6, (80,210))
-
-    gridvert5 = font.render("5", 1, (0,255,0))
-    game_menu.blit(gridvert5, (80,260))
-
-    gridvert4 = font.render("4", 1, (0,255,0))
-    game_menu.blit(gridvert4, (80,310))
-
-    gridvert3 = font.render("3", 1, (0,255,0))
-    game_menu.blit(gridvert3, (80,360))
-
-    gridvert2 = font.render("2", 1, (0,255,0))
-    game_menu.blit(gridvert2, (80,410))
-
-    gridvert1 = font.render("1", 1, (0,255,0))
-    game_menu.blit(gridvert1, (80,460))
-
-    Title = font.render("CHESS BATTLE",1,(255,255,255))
-    game_menu.blit(Title,(275,50))
-
-    MoveLog = font.render("Move Log:",1,(255,255,255))
-    game_menu.blit(MoveLog,(575,100))
 
 """ Game variables """
 
@@ -568,7 +561,7 @@ pygame.mixer.music.play(0)
 pygame.mixer.music.queue('Music/Theme2.mp3')
 
 
-reset_game()
+GameStart()
 
 """ Main Loop """
 running = 1
@@ -614,7 +607,7 @@ while running:
         # Handle the game board and game menu
         for c in game_menu.get_pressed():
             if c == 'new':      # Reset game button
-                reset_game()
+                GameStart()
             elif c == 'quit':   # Exit game button
                 running = 0
             else:
