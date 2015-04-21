@@ -9,7 +9,7 @@ from menu import *
 
 
 init()
-screen = display.set_mode((600,600))#Resolution
+screen = display.set_mode((750,750))#Resolution
 """Loading Images"""
 whiteKing = image.load("images/wking.png").convert_alpha()
 blackKing = image.load("images/bking.png").convert_alpha()
@@ -26,14 +26,9 @@ blackKnight = image.load("images/bknight.png").convert_alpha()
 
 def reset_game(): #Starting positions
 
-    global game_board, PlayerTurn, wcaptured, bcaptured
-    close_menu(win_menu)
-    win_menu.event_off(5)
-    win_menu.event_off(6)
+    global game_board, PlayerTurn
     deselect_piece()
     PlayerTurn = 1
-    wcaptured = []
-    bcaptured = []
     game_board[0] = 'R1'; game_board[7] = 'R1'; game_board[-1] = 'R2'; game_board[-8] = 'R2'#R1 is Rook for White, R2 is rook for Black, etc
     game_board[1] = 'N1'; game_board[6] = 'N1'; game_board[-2] = 'N2'; game_board[-7] = 'N2'
     game_board[2] = 'B1'; game_board[5] = 'B1'; game_board[-3] = 'B2'; game_board[-6] = 'B2'
@@ -311,7 +306,7 @@ def deselect_piece():#Stops selection
 
 def move_piece(destination):#Moves piece
 
-    global game_board, en_passent, wcaptured, bcaptured
+    global game_board, en_passent
 
 
     if game_board[selected][0] == 'P':
@@ -329,8 +324,6 @@ def move_piece(destination):#Moves piece
             open_menu(bpromote_menu)
         if destination > 55 and PlayerTurn == 1:
             open_menu(wpromote_menu)
-    # Add captured piece to list of captured pieces
-    #
 
     game_board[destination] = game_board[selected]
     game_board[selected] = None
@@ -494,14 +487,18 @@ def GridSystem():
     gridvert1 = font.render("1", 1, (0,255,0))
     game_menu.blit(gridvert1, (80,460))
 
+    Title = font.render("CHESS BATTLE",1,(255,255,255))
+    game_menu.blit(Title,(275,50))
+
+    MoveLog = font.render("Move Log:",1,(255,255,255))
+    game_menu.blit(MoveLog,(575,100))
+
 """ Game variables """
 
 PlayerTurn = 1
 selected = None
 moves = []
 captures = []
-wcaptured = []
-bcaptured = []
 game_board = [None for i in range(64)]
 en_passent = None
 
@@ -543,25 +540,7 @@ new_game = Button((2,2,50,20),'new',(0,))
 new_game.add_layer(new_bg,(0,0),(2,))
 add_layer_multi(layer_is_move,(0,0),(-5,6,-7),board_buttons)
 
-
 add_objects(game_menu,board_buttons)
-
-
-# Win menu
-win_menu = make_menu((175,270,250,90),'win',1)
-win_menu.add_layer(win_bg,(0,0),(5,6))
-win_menu.add_text("White wins!",font,(0,0,0),(125,30),1,0,(5,))
-win_menu.add_text("Black wins!",font,(0,0,0),(125,30),1,0,(6,))
-new_game2 = Button((10,60,100,20),'new',(0,))
-new_game2.add_layer(new_bg,(0,0),(2,))
-new_game2.add_layer(new_bg2,(0,0),(0,-2))
-new_game2.add_text("New Game",font,(255,255,255),(50,10),1,0,(0,))
-win_menu.add_object(new_game2)
-quit2 = Button((180,60,50,20),'quit',(0,))
-quit2.add_layer(new_bg,(0,0),(2,))
-quit2.add_layer(new_bg2,(0,0),(0,-2))
-quit2.add_text("Quit",font,(255,255,255),(25,10),1,0,(0,))
-win_menu.add_object(quit2)
 
 
 # Promotion menus
@@ -575,8 +554,6 @@ bknight_btn = Button((60,10,50,50),'N',(0,))
 brook_btn = Button((10,60,50,50),'R',(0,))
 bbishop_btn = Button((60,60,50,50),'B',(0,))
 
-#add_layer_multi(layer_hovered,(0,0),(2,),(wqueen_btn,wknight_btn,wrook_btn,wbishop_btn,
-#                                          bqueen_btn,bknight_btn,brook_btn,bbishop_btn))
 
 wqueen_btn.add_layer(whiteQueen,(0,0),(0,))
 wrook_btn.add_layer(whiteRook,(0,0),(0,))
@@ -594,6 +571,13 @@ add_objects(wpromote_menu,(wqueen_btn,wknight_btn,wrook_btn,wbishop_btn))
 bpromote_menu = make_menu((240,240,120,120),'bpromote',1)
 bpromote_menu.add_layer(promote_layer,(0,0),(0,))
 add_objects(bpromote_menu,(bqueen_btn,bknight_btn,brook_btn,bbishop_btn))
+
+"""Music!!!!!!!!!!!!"""
+pygame.mixer.music.load('Music/Theme.mp3')
+pygame.mixer.music.set_volume(0.2)
+pygame.mixer.music.play(0)
+pygame.mixer.music.queue('Music/Theme2.mp3')
+
 
 reset_game()
 
@@ -667,53 +651,11 @@ while running:
                             deselect_piece()
                             select_piece(c)
 
-    if is_menu_open(win_menu):
-        for i in win_menu.get_pressed():
-            if i == 'quit':
-                running = 0
-            elif i == 'new':
-                reset_game()
-
     """ STEP 3: Draw menus """
 
     update_menu_images()
 
     if is_menu_open(game_menu):
-        # Show which pieces are captured
-        i = 0
-        p = 0
-        for piece in wcaptured:
-            if piece == "P":
-                if p == 0:
-                    game_menu.blit(blackPawn,(0,50))
-                p += 1
-            else:
-                i += 50
-            if piece == "B": game_menu.blit(blackBishop,(0,50+i))
-            if piece == "N": game_menu.blit(blackKnight,(0,50+i))
-            if piece == "R": game_menu.blit(blackRook,(0,50+i))
-            if piece == "Q": game_menu.blit(blackQueen,(0,50+i))
-        if p != 0:
-            msg = font.render(str(p),1,(255,255,255))
-            game_menu.blit(msg,(20,68))
-
-        i = 0
-        p = 0
-        for piece in bcaptured:
-            if piece == "P":
-                if p == 0:
-                    game_menu.blit(whitePawn,(550,50))
-                p += 1
-            else:
-                i += 50
-            if piece == "B": game_menu.blit(whiteBishop,(550,50+i))
-            if piece == "N": game_menu.blit(whiteKnight,(550,50+i))
-            if piece == "R": game_menu.blit(whiteRook,(550,50+i))
-            if piece == "Q": game_menu.blit(whiteQueen,(550,50+i))
-        if p != 0:
-            msg = font.render(str(p),1,(0,0,0))
-            game_menu.blit(msg,(570,68))
-
         # Draw the pieces on the game board
         for i in range(64):
             if game_board[i] == 'P1':
