@@ -39,7 +39,7 @@ def reset_game(): #Starting positions
     game_board[0] = 'R1'; game_board[7] = 'R1'; game_board[-1] = 'R2'; game_board[-8] = 'R2'#R1 is Rook for White, R2 is rook for Black, etc
     game_board[1] = 'N1'; game_board[6] = 'N1'; game_board[-2] = 'N2'; game_board[-7] = 'N2'
     game_board[2] = 'B1'; game_board[5] = 'B1'; game_board[-3] = 'B2'; game_board[-6] = 'B2'
-    game_board[4] = 'K1'; game_board[3] = 'Q1'; game_board[-4] = 'K2'; game_board[-5] = 'Q2'
+    game_board[4] = 'K1'; game_board[3] = 'Q1'; game_board[-4] = 'Q2'; game_board[-5] = 'K2'
     for i in range(8):
         game_board[8+i] = 'P1'
         game_board[48+i] = 'P2'
@@ -541,9 +541,7 @@ game_board = [None for i in range(64)]
 en_passent = None
 
 """ Creation of game board """
-
-font1 = font.Font('fonts/Alido.otf',18)
-font2 = font.Font('fonts/LCALLIG.ttf',36)
+font = pygame.font.Font(None, 36)
 
 win_bg = Surface((250,90))
 win_bg.fill((220,20,60))
@@ -552,7 +550,7 @@ draw.rect(win_bg,(255,0,0),(5,5,240,80))
 layer_black = Surface((50,50))
 layer_black.fill((90,74,32))
 layer_is_move = Surface((50,50),SRCALPHA)
-layer_is_move.fill((0,0,255,85))
+layer_is_move.fill((0,0,255))
 
 new_bg = Surface((100,20))
 new_bg.fill((255,0,0))
@@ -587,17 +585,17 @@ add_objects(game_menu,board_buttons)
 # Win menu
 win_menu = make_menu((175,270,250,90),'win',1)
 win_menu.add_layer(win_bg,(0,0),(5,6))
-win_menu.add_text("White wins!",font2,(0,0,0),(125,30),1,0,(5,))
-win_menu.add_text("Black wins!",font2,(0,0,0),(125,30),1,0,(6,))
+win_menu.add_text("White wins!",font,(0,0,0),(125,30),1,0,(5,))
+win_menu.add_text("Black wins!",font,(0,0,0),(125,30),1,0,(6,))
 new_game2 = Button((10,60,100,20),'new',(0,))
 new_game2.add_layer(new_bg,(0,0),(2,))
 new_game2.add_layer(new_bg2,(0,0),(0,-2))
-new_game2.add_text("New Game",font1,(255,255,255),(50,10),1,0,(0,))
+new_game2.add_text("New Game",font,(255,255,255),(50,10),1,0,(0,))
 win_menu.add_object(new_game2)
 quit2 = Button((180,60,50,20),'quit',(0,))
 quit2.add_layer(new_bg,(0,0),(2,))
 quit2.add_layer(new_bg2,(0,0),(0,-2))
-quit2.add_text("Quit",font1,(255,255,255),(25,10),1,0,(0,))
+quit2.add_text("Quit",font,(255,255,255),(25,10),1,0,(0,))
 win_menu.add_object(quit2)
 
 
@@ -731,7 +729,7 @@ while running:
             if piece == "R": game_menu.blit(rook2,(0,50+i))
             if piece == "Q": game_menu.blit(queen2,(0,50+i))
         if p != 0:
-            msg = font1.render(str(p),1,(255,255,255))
+            msg = font.render(str(p),1,(255,255,255))
             game_menu.blit(msg,(20,68))
 
         i = 0
@@ -748,7 +746,7 @@ while running:
             if piece == "R": game_menu.blit(rook1,(550,50+i))
             if piece == "Q": game_menu.blit(queen1,(550,50+i))
         if p != 0:
-            msg = font1.render(str(p),1,(0,0,0))
+            msg = font.render(str(p),1,(0,0,0))
             game_menu.blit(msg,(570,68))
 
         # Draw the pieces on the game board
@@ -777,7 +775,9 @@ while running:
                 game_menu.blit(knight1,(100+(i%8)*50,450-(i//8)*50))
             if game_board[i] == 'N2':
                 game_menu.blit(knight2,(100+(i%8)*50,450-(i//8)*50))
-
+    font = pygame.font.Font(None, 36)
+    text = font.render("a     b     c     d     e     f     g     h", 1, (0, 255, 0))
+    game_menu.blit(text,(120,500))
     screen.fill((0,0,255))
     draw.rect(screen,(255,0,0),(100,100,400,400))
     draw_menus(screen)
