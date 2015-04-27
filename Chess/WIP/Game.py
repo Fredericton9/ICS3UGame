@@ -91,11 +91,9 @@ def select_piece(location):
             moves.append(selected+8)
             if selected//8 == 1 and game_board[selected+16] == None:
                 moves.append(selected+16)
-        if selected%8 != 0 and ((game_board[selected+7] != None and game_board[selected+7][1] == '2') or \
-                                (game_board[selected-1] == 'P2' and en_passent == selected-1)):
+        if selected%8 != 0 and ((game_board[selected+7] != None and game_board[selected+7][1] == '2')):
             captures.append(selected+7)
-        if selected%8 != 7 and ((game_board[selected+9] != None and game_board[selected+9][1] == '2') or \
-                                (game_board[selected+1] == 'P2' and en_passent == selected+1)):
+        if selected%8 != 7 and ((game_board[selected+9] != None and game_board[selected+9][1] == '2')):
             captures.append(selected+9)
 
     # Pawn for player 2
@@ -104,11 +102,9 @@ def select_piece(location):
             moves.append(selected-8)
             if selected//8 == 6 and game_board[selected-16] == None:
                 moves.append(selected-16)
-        if selected%8 != 7 and ((game_board[selected-7] != None and game_board[selected-7][1] == '1') or \
-                                (game_board[selected+1] == 'P1' and en_passent == selected+1)):
+        if selected%8 != 7 and ((game_board[selected-7] != None and game_board[selected-7][1] == '1')):
             captures.append(selected-7)
-        if selected%8 != 0 and ((game_board[selected-9] != None and game_board[selected-9][1] == '1') or \
-                                (game_board[selected-1] == 'P1' and en_passent == selected-1)):
+        if selected%8 != 0 and ((game_board[selected-9] != None and game_board[selected-9][1] == '1')):
             captures.append(selected-9)
 
     # Rook and Queen for both players
@@ -327,17 +323,8 @@ def deselect_piece():
 """Moves pieces"""
 def move_piece(destination):#Moves piece
 
-    global game_board, en_passent
+    global game_board
     if game_board[selected][0] == 'P':
-        # En-passent rule activation
-        if abs(destination-selected) in (7,9) and en_passent != None and abs(en_passent-destination) == 8:
-            game_board[en_passent] = None
-
-        # En-passent rule initiation
-        en_passent = None
-        if abs(destination-selected) == 16:
-            en_passent = destination
-
         # Open the menu to select promotion
         if destination < 8 and PlayerTurn == 2:
             open_menu(bpromote_menu)
@@ -484,7 +471,6 @@ selected = None
 moves = []
 captures = []
 game_board = [None for i in range(64)]
-en_passent = None
 
 """Game Board Creation"""
 font = pygame.font.Font(None, 36)
@@ -629,9 +615,7 @@ while running:
                         else:
                             deselect_piece()
                             select_piece(c)
-
     """ STEP 3: Draw menus """
-
     update_menu_images()
 
     if is_menu_open(game_menu):
