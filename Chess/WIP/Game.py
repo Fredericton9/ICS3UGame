@@ -15,18 +15,19 @@ init()
 Screen = display.set_mode((750,600))#Resolution
 
 """Loading Images"""
-whiteKing = image.load("images/WhiteKing.png").convert_alpha()
-blackKing = image.load("images/BlackKing.png").convert_alpha()
-whitePawn = image.load("images/WhitePawn.png").convert_alpha()
-blackPawn = image.load("images/BlackPawn.png").convert_alpha()
-whiteRook = image.load("images/WhiteRook.png").convert_alpha()
-blackRook = image.load("images/BlackRook.png").convert_alpha()
-whiteQueen = image.load("images/WhiteQueen.png").convert_alpha()
-blackQueen = image.load("images/BlackQueen.png").convert_alpha()
-whiteBishop = image.load("images/WhiteBishop.png").convert_alpha()
-blackBishop = image.load("images/BlackBishop.png").convert_alpha()
-whiteKnight = image.load("images/WhiteKnight.png").convert_alpha()
-blackKnight = image.load("images/BlackKnight.png").convert_alpha()
+WhiteKing = image.load("images/WhiteKing.png").convert_alpha()
+WhitePawn = image.load("images/WhitePawn.png").convert_alpha()
+WhiteRook = image.load("images/WhiteRook.png").convert_alpha()
+WhiteQueen = image.load("images/WhiteQueen.png").convert_alpha()
+WhiteBishop = image.load("images/WhiteBishop.png").convert_alpha()
+WhiteKnight = image.load("images/WhiteKnight.png").convert_alpha()
+
+BlackKing = image.load("images/BlackKing.png").convert_alpha()
+BlackPawn = image.load("images/BlackPawn.png").convert_alpha()
+BlackRook = image.load("images/BlackRook.png").convert_alpha()
+BlackQueen = image.load("images/BlackQueen.png").convert_alpha()
+BlackBishop = image.load("images/BlackBishop.png").convert_alpha()
+BlackKnight = image.load("images/BlackKnight.png").convert_alpha()
 """Grid System and Text"""
 def GridSystem():
     grid_horizontal = font.render("a     b     c     d     e     f     g     h", 0, (0,255,0))
@@ -479,8 +480,8 @@ win_bg = Surface((250,90))
 win_bg.fill((220,20,60))
 draw.rect(win_bg,(255,0,0),(5,5,240,80))
 
-layer_black = Surface((50,50))
-layer_black.fill((90,74,32))
+layer_Black = Surface((50,50))
+layer_Black.fill((90,74,32))
 layer_is_move = Surface((50,50),SRCALPHA)
 layer_is_move.fill((120,0,120))
 
@@ -504,7 +505,7 @@ board_buttons = [Button((100+(i%8)*50,450-(i//8)*50,50,50),i,(0,)) for i in rang
 
 for i in range(64):
     if (i+i//8)%2 == 0:
-        board_buttons[i].add_layer(layer_black,(0,0),(0,))
+        board_buttons[i].add_layer(layer_Black,(0,0),(0,))
 
 add_layer_multi(layer_is_move,(0,0),(-5,6,-7),board_buttons)
 
@@ -520,14 +521,14 @@ Bknight_btn = Button((60,10,50,50),'N',(0,))
 Brook_btn = Button((10,60,50,50),'R',(0,))
 Bbishop_btn = Button((60,60,50,50),'B',(0,))
 
-Wqueen_btn.add_layer(whiteQueen,(0,0),(0,))
-Wrook_btn.add_layer(whiteRook,(0,0),(0,))
-Wknight_btn.add_layer(whiteKnight,(0,0),(0,))
-Wbishop_btn.add_layer(whiteBishop,(0,0),(0,))
-Bqueen_btn.add_layer(blackQueen,(0,0),(0,))
-Brook_btn.add_layer(blackRook,(0,0),(0,))
-Bknight_btn.add_layer(blackKnight,(0,0),(0,))
-Bbishop_btn.add_layer(blackBishop,(0,0),(0,))
+Wqueen_btn.add_layer(WhiteQueen,(0,0),(0,))
+Wrook_btn.add_layer(WhiteRook,(0,0),(0,))
+Wknight_btn.add_layer(WhiteKnight,(0,0),(0,))
+Wbishop_btn.add_layer(WhiteBishop,(0,0),(0,))
+Bqueen_btn.add_layer(BlackQueen,(0,0),(0,))
+Brook_btn.add_layer(BlackRook,(0,0),(0,))
+Bknight_btn.add_layer(BlackKnight,(0,0),(0,))
+Bbishop_btn.add_layer(BlackBishop,(0,0),(0,))
 
 wpromote_menu = make_menu((240,240,120,120),'wpromote',1)
 wpromote_menu.add_layer(promote_layer,(0,0),(0,))
@@ -622,29 +623,29 @@ while running:
         # Draw the pieces on the game board
         for i in range(64):
             if Game_Board[i] == 'P1':
-                Game_Menu.blit(whitePawn,(100+(i%8)*50,450-(i//8)*50))
+                Game_Menu.blit(WhitePawn,(100+(i%8)*50,450-(i//8)*50))
             if Game_Board[i] == 'P2':
-                Game_Menu.blit(blackPawn,(100+(i%8)*50,450-(i//8)*50))
+                Game_Menu.blit(BlackPawn,(100+(i%8)*50,450-(i//8)*50))
             if Game_Board[i] == 'K1':
-                Game_Menu.blit(whiteKing,(100+(i%8)*50,450-(i//8)*50))
+                Game_Menu.blit(WhiteKing,(100+(i%8)*50,450-(i//8)*50))
             if Game_Board[i] == 'K2':
-                Game_Menu.blit(blackKing,(100+(i%8)*50,450-(i//8)*50))
+                Game_Menu.blit(BlackKing,(100+(i%8)*50,450-(i//8)*50))
             if Game_Board[i] == 'Q1':
-                Game_Menu.blit(whiteQueen,(100+(i%8)*50,450-(i//8)*50))
+                Game_Menu.blit(WhiteQueen,(100+(i%8)*50,450-(i//8)*50))
             if Game_Board[i] == 'Q2':
-                Game_Menu.blit(blackQueen,(100+(i%8)*50,450-(i//8)*50))
+                Game_Menu.blit(BlackQueen,(100+(i%8)*50,450-(i//8)*50))
             if Game_Board[i] == 'R1':
-                Game_Menu.blit(whiteRook,(100+(i%8)*50,450-(i//8)*50))
+                Game_Menu.blit(WhiteRook,(100+(i%8)*50,450-(i//8)*50))
             if Game_Board[i] == 'R2':
-                Game_Menu.blit(blackRook,(100+(i%8)*50,450-(i//8)*50))
+                Game_Menu.blit(BlackRook,(100+(i%8)*50,450-(i//8)*50))
             if Game_Board[i] == 'B1':
-                Game_Menu.blit(whiteBishop,(100+(i%8)*50,450-(i//8)*50))
+                Game_Menu.blit(WhiteBishop,(100+(i%8)*50,450-(i//8)*50))
             if Game_Board[i] == 'B2':
-                Game_Menu.blit(blackBishop,(100+(i%8)*50,450-(i//8)*50))
+                Game_Menu.blit(BlackBishop,(100+(i%8)*50,450-(i//8)*50))
             if Game_Board[i] == 'N1':
-                Game_Menu.blit(whiteKnight,(100+(i%8)*50,450-(i//8)*50))
+                Game_Menu.blit(WhiteKnight,(100+(i%8)*50,450-(i//8)*50))
             if Game_Board[i] == 'N2':
-                Game_Menu.blit(blackKnight,(100+(i%8)*50,450-(i//8)*50))
+                Game_Menu.blit(BlackKnight,(100+(i%8)*50,450-(i//8)*50))
     font = pygame.font.Font(None, 36)
     GridSystem()
     Screen.fill((0,0,255))
